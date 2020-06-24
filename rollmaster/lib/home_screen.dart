@@ -1,15 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'file:///C:/git/rollmaster-app/rollmaster/lib/auth/sign_in.dart';
 
-import 'home_screen.dart';
+import 'login_page.dart';
 
-class LoginPage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _HomeScreenState createState() => _HomeScreenState();
 
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               FlutterLogo(size: 150),
               SizedBox(height: 50),
-              _signInButton(),
+              _logOutButton(),
             ],
           ),
         ),
@@ -30,15 +31,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _signInButton() {
+  Widget _logOutButton() {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        signInWithGoogle().whenComplete(() {
+        FirebaseAuth.instance.signOut().whenComplete(() {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return HomeScreen();
+                return LoginPage();
               },
             ),
           );
@@ -53,11 +54,10 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                'Logout',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
@@ -73,11 +73,4 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 
-class FirstScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(color: Colors.blue[100]),
-    );
-  }
-}
+
