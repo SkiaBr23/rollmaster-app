@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "843197887687",
+    "firebase_url": "https://rollmaster-rm23.firebaseio.com",
+    "project_id": "rollmaster-rm23",
+    "storage_bucket": "rollmaster-rm23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843197887687:android:d8c3f25bc8bd3f7f5e3ae2",
+        "android_client_info": {
+          "package_name": "br.com.skiabr23.rollmaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "843197887687-1sd9gnru1gscqp6e90e5ca8hena5i4ib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.skiabr23.rollmaster",
+            "certificate_hash": "4d5bb4b3bafe2331ba4c2dc346ea31d3cee8dc0d"
+          }
+        },
+        {
+          "client_id": "843197887687-j4r4egrep896em7m8h0pnqi2p8v6ev2s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbf0a7aRORDEiKKBRmzpDSeP7asy6Q2QE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "843197887687-j4r4egrep896em7m8h0pnqi2p8v6ev2s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
