@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/git/rollmaster-app/rollmaster/lib/auth/sign_in.dart';
 
+import 'auth/sign_in.dart';
 import 'home_screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        signInWithGoogle().whenComplete(() {
+        signOutGoogle().whenComplete(() {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {

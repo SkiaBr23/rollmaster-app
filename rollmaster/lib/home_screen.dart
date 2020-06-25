@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'file:///C:/git/rollmaster-app/rollmaster/lib/auth/sign_in.dart';
+import 'package:rollmaster/auth/sign_in.dart';
 
 import 'login_page.dart';
 
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        FirebaseAuth.instance.signOut().whenComplete(() {
+        signOutGoogle().whenComplete(() {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
