@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class User {
@@ -10,13 +11,21 @@ class User {
 
   User(this.userId, this.email, this.fullName);
 
+  User.fromFirebase(FirebaseUser fbUser){
+    this.userId = fbUser.uid;
+    this.email = fbUser.email;
+    this.fullName = fbUser.displayName;
+    this.profilePictureUrl = fbUser.photoUrl;
+    this.activeSessions = [];
+  }
+
   @override
   String toString() {
     return 'User{email: $email, fullName: $fullName, userId: $userId, profilePictureUrl: $profilePictureUrl, activeSessions: $activeSessions}';
   }
   toJson() {
     return {
-      "email": userId,
+      "email": email,
       "fullName": fullName,
       "userId": userId,
       "profilePictureUrl": profilePictureUrl,

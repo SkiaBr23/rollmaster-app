@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rollmaster/auth/sign_in.dart';
+import 'package:rollmaster/model/user.dart';
 
 import 'login_page.dart';
 
@@ -11,6 +11,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  User _user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

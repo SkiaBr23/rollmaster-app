@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:rollmaster/auth/rtdb_user.dart';
 
 import 'auth/sign_in.dart';
 import 'home_screen.dart';
@@ -6,10 +9,11 @@ import 'home_screen.dart';
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
-
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final usersDbRef = FirebaseDatabase.instance.reference().child("users");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,15 +38,10 @@ class _LoginPageState extends State<LoginPage> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        signOutGoogle().whenComplete(() {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return HomeScreen();
-              },
-            ),
-          );
-        });
+        signInWithGoogle().then((value) => checkPersistedUser(value));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return HomeScreen();
+        }));
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
@@ -69,9 +68,12 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
 }
 
+Future<FirebaseUser> currentUserObject() async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  return user;
+}
 
 class FirstScreen extends StatelessWidget {
   @override
