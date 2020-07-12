@@ -5,11 +5,19 @@ class Session {
   String creatorId;
   String title;
   String code;
-  String creationDate;
+  DateTime creationDate;
   // String qrCodePictureUrl?
-  // List<String> playerIdList?
+  List<String> activePlayers;
 
-  Session(this.creatorId, this.title, this.creationDate);
+  Session(this.key, this.creatorId, this.title, this.creationDate);
+
+  Session.start(String key, String creatorId, String title){
+    this.key = key;
+    this.creatorId = creatorId;
+    this.title = title;
+    this.creationDate = DateTime.now();
+    this.activePlayers = [creatorId];
+  }
 
   @override
   String toString() {
@@ -22,7 +30,7 @@ class Session {
       "creatorId": creatorId,
       "title": title,
       "code": code,
-      "creationDate": creationDate
+      "creationDate": creationDate.toIso8601String()
     };
   }
 
@@ -31,5 +39,13 @@ class Session {
         creatorId = snapshot.value["creatorId"],
         title = snapshot.value["title"],
         code = snapshot.value["code"],
-        creationDate = snapshot.value["creationDate"];
+        creationDate = DateTime.parse(snapshot.value["creationDate"]);
+
+  Session.fromMap(Map<dynamic,dynamic> map) :
+        key = map["key"],
+        creatorId = map["creatorId"],
+        title = map["title"],
+        code = map["code"],
+        creationDate = DateTime.parse(map["creationDate"]);
 }
+

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:rollmaster/auth/rtdb_user.dart';
+import 'package:rollmaster/main.dart';
+import 'model/user.dart';
 
 import 'auth/sign_in.dart';
 import 'home_screen.dart';
@@ -38,10 +40,25 @@ class _LoginPageState extends State<LoginPage> {
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
-        signInWithGoogle().then((value) => checkPersistedUser(value));
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return HomeScreen();
-        }));
+        signInWithGoogle().then((value) => {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                return FutureBuilder(
+                    future: checkPersistedUser(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<User> userSnapshot) {
+                      switch (userSnapshot.connectionState) {
+                        case ConnectionState.done:
+                          {
+                            return userSnapshot.data != null ? HomeScreen(currentUser: userSnapshot.data) : loadingCircle();
+                          }
+                        default:
+                          {
+                            return loadingCircle();
+                          }
+                      }
+                    }); 
+              }))
+            });
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
