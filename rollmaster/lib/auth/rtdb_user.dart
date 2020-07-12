@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:rollmaster/model/roll.dart';
+import 'package:rollmaster/model/roll_check.dart';
 import 'package:rollmaster/model/session.dart';
 import 'package:rollmaster/model/user.dart';
 
@@ -9,9 +11,18 @@ String RTDB_REFERENCE = "https://rollmaster-rm23.firebaseio.com/";
 final fbDbRef = FirebaseDatabase.instance.reference();
 final usersDbRef = fbDbRef.child("users");
 final sessionDbRef = fbDbRef.child("sessions");
+final rollsDbRef = fbDbRef.child("rolls");
 
 String getKeyFromRef(DatabaseReference dbRef) {
   return dbRef.push().key;
+}
+
+Roll sendRoll(User user, String sessionId, RollCheck rollCheck){
+  String key = getKeyFromRef(rollsDbRef);
+  Roll roll = Roll.newRoll(key, rollCheck, "dice", user.userId, user.fullName, sessionId);
+  roll.evalProbabilities();
+  rollsDbRef.child(sessionId).child(key).set(roll.toJson());
+  return roll;
 }
 
 User saveUser(FirebaseUser loggedUser) {

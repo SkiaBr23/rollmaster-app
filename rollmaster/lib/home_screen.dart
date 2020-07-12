@@ -113,38 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => SessionScreen(currentSession: session)),
+          builder: (context) => SessionScreen(currentSession: session, currentUser: widget.currentUser,)),
     );
-  }
-
-  Widget _sessionListView(User user) {
-    return FutureBuilder(
-        future: getSessionsByOwner(user),
-        builder: (context, AsyncSnapshot<List<Session>> snapshot) {
-          if (snapshot.hasData) {
-            _sessionList = snapshot.data;
-            _sessionList.forEach((element) {
-              print(element.toString());
-            });
-            return new ListView.builder(
-                shrinkWrap: true,
-                itemCount: _sessionList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Title: " + _sessionList[index].title),
-                        Text("Creation Date: " +
-                            _sessionList[index].creationDate.toIso8601String()),
-                        Text("Key: " + _sessionList[index].key),
-                      ],
-                    ),
-                  );
-                });
-          }
-          return CircularProgressIndicator();
-        });
   }
 
   Widget _logOutButton() {
