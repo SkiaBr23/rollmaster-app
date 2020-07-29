@@ -7,14 +7,26 @@ import 'package:rollmaster/model/roll_check.dart';
 import 'package:rollmaster/model/session.dart';
 import 'package:rollmaster/model/user.dart';
 
-String RTDB_REFERENCE = "https://rollmaster-rm23.firebaseio.com/";
 final fbDbRef = FirebaseDatabase.instance.reference();
 final usersDbRef = fbDbRef.child("users");
 final sessionDbRef = fbDbRef.child("sessions");
 final rollsDbRef = fbDbRef.child("rolls");
 
+DatabaseReference getUserSessionsRef(String userId){
+  return usersDbRef.child(userId).child("activeSessions");
+}
 String getKeyFromRef(DatabaseReference dbRef) {
   return dbRef.push().key;
+}
+
+void deleteSession(String userId, String sessionId){
+  usersDbRef.child(userId).child("activeSessions").child(sessionId).remove();
+  sessionDbRef.child(sessionId).remove();
+  rollsDbRef.child(sessionId).remove();
+}
+
+Future<void> cleanRolls(String sessionId) async {
+  rollsDbRef.child(sessionId).set(null);
 }
 
 Roll sendRoll(User user, String sessionId, RollCheck rollCheck){
@@ -34,7 +46,7 @@ User saveUser(FirebaseUser loggedUser) {
 Future<Session> getSessionById(String sessionId) async {
   Session session;
   await sessionDbRef.child(sessionId).once().then((snapshot) => {
-        if (snapshot != null) {session = Session.fromSnapshot(snapshot.value)}
+        if (snapshot != null) {session = Session.fromSnapshot(snapshot)}
       });
   return session;
 }
@@ -47,7 +59,7 @@ Future<List<Session>> getSessionsByOwner(User owner) async {
       .equalTo(owner.userId)
       .once()
       .then((snapshot) => {
-            if (snapshot != null)
+            if (snapshot != null && snapshot.value != null)
               {
                 Map<String, dynamic>.from(snapshot.value).forEach((key, value) {
                   sessions.add(Session.fromMap(value));
@@ -102,7 +114,7 @@ Future<Session> createSession(User owner) async {
   await usersDbRef
       .child(owner.userId)
       .child("activeSessions")
-      .push()
+      .child(sessionKey)
       .set(sessionKey);
   return newSession;
 }
